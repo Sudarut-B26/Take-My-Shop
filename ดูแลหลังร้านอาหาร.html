@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>บัญชีร้านลูกชิ้นปิ้ง</title>
+<style>
+:root{--blue:#1769aa;--dark:#12395b;--green:#24945a;--orange:#ed7d31;--red:#d9534f;--bg:#f4f7fb;--card:#fff;--muted:#6b7280}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:#172033}
+header{background:linear-gradient(135deg,#12395b,#1769aa);color:white;padding:22px 5vw;display:flex;justify-content:space-between;align-items:center;gap:20px}
+header h1{margin:0;font-size:25px} header p{margin:4px 0 0;opacity:.85}
+nav{display:flex;gap:7px;flex-wrap:wrap;padding:12px 5vw;background:white;box-shadow:0 2px 8px #0000000d;position:sticky;top:0;z-index:5}
+nav button{border:0;background:#eef4f9;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700;color:var(--dark)}
+nav button.active{background:var(--blue);color:white}
+main{max-width:1250px;margin:auto;padding:22px 5vw 50px}.page{display:none}.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--card);padding:18px;border-radius:16px;box-shadow:0 4px 16px #17365d12;border:1px solid #e7edf4}.label{color:var(--muted);font-size:14px}.value{font-size:25px;font-weight:800;margin-top:7px}
+.green{color:var(--green)}.red{color:var(--red)}.orange{color:var(--orange)}.blue{color:var(--blue)}
+.panel{background:white;border-radius:16px;padding:20px;margin-top:18px;box-shadow:0 4px 16px #17365d0e}
+h2{margin:0 0 5px;color:var(--dark)}.hint{color:var(--muted);margin:0 0 15px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:5px}.field input,.field select{width:100%;padding:11px;border:1px solid #ccd6e2;border-radius:9px;background:#fff}
+.btn{border:0;padding:11px 16px;border-radius:10px;background:var(--blue);color:#fff;font-weight:800;cursor:pointer;margin-top:12px}.btn.secondary{background:#e8eef5;color:var(--dark)}.btn.danger{background:var(--red)}
+table{width:100%;border-collapse:collapse;margin-top:15px}th,td{padding:10px;border-bottom:1px solid #e9eef4;text-align:left;font-size:14px}th{background:#f2f6fa;color:var(--dark)}
+.notice{padding:13px;border-radius:11px;background:#fff7d6;margin-top:12px}.formula{background:#eef7ff;padding:12px;border-radius:10px}
+.bar{height:14px;background:#e9eef4;border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue);width:0}
+.small{font-size:12px;color:var(--muted)}.empty{text-align:center;color:#8a94a3;padding:25px}.actions{display:flex;gap:6px;flex-wrap:wrap}.btn.sm{padding:7px 10px;margin-top:0;font-size:12px}.thumb{width:58px;height:58px;object-fit:cover;border-radius:9px;border:1px solid #dbe3ec;background:#f6f8fb;display:block}.thumb-lg{max-width:240px;max-height:160px;object-fit:cover;border-radius:12px;border:1px solid #dbe3ec}.image-field{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.image-preview{width:90px;height:70px;object-fit:cover;border-radius:10px;border:1px solid #dbe3ec;background:#f6f8fb}.shop-logo{width:52px;height:52px;object-fit:cover;border-radius:12px;vertical-align:middle;margin-right:10px;border:2px solid #ffffff55}.filter-row{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:10px;align-items:end}.filter-row .btn{margin-top:0}.modal{display:none;position:fixed;inset:0;background:#0008;z-index:200;align-items:center;justify-content:center;padding:15px}.modal.show{display:flex}.modal-box{background:#fff;width:min(760px,96vw);max-height:90vh;overflow:auto;border-radius:18px;padding:22px;box-shadow:0 20px 70px #0005}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.close{border:0;background:#eef2f6;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:20px}.badge{display:inline-block;padding:4px 8px;border-radius:20px;background:#eef4f9;color:var(--dark);font-size:12px;font-weight:700}@media(max-width:700px){.filter-row{grid-template-columns:1fr 1fr}.filter-row .wide{grid-column:1/-1}}
+@media(max-width:850px){.cards,.grid{grid-template-columns:repeat(2,1fr)}header{display:block}nav{overflow:auto;white-space:nowrap}}
+@media(max-width:520px){.cards,.grid{grid-template-columns:1fr}main{padding:15px}.value{font-size:22px}}
+
+.login-screen{position:fixed;inset:0;background:linear-gradient(135deg,#12395b,#1769aa);display:flex;align-items:center;justify-content:center;z-index:100}
+.login-box{width:min(420px,90vw);background:#fff;border-radius:22px;padding:32px;box-shadow:0 20px 60px #0005}
+.login-logo{text-align:center;font-size:54px}.login-box h1{text-align:center;color:#12395b;margin:8px 0}.login-box p{text-align:center;color:#6b7280;margin-bottom:25px}
+.login-box label{display:block;font-weight:700;margin:12px 0 6px}.login-box input{width:100%;padding:13px;border:1px solid #ccd6e2;border-radius:10px;font-size:16px}
+.login-btn{width:100%;border:0;background:#1769aa;color:#fff;padding:13px;border-radius:10px;font-size:16px;font-weight:800;cursor:pointer;margin-top:18px}
+.login-error{display:none;color:#d9534f;background:#fff0f0;padding:10px;border-radius:9px;margin-top:12px;text-align:center}
+.admin-area{display:none}.user-info{display:flex;align-items:center;gap:10px}.logout-btn{border:1px solid #ffffff66;background:#ffffff1c;color:#fff;padding:8px 12px;border-radius:9px;cursor:pointer;font-weight:700}
+</style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🔐</div>
+    <h1>Admin Login</h1>
+    <p>ระบบบัญชีร้านลูกชิ้นปิ้ง</p>
+    <label>ชื่อผู้ใช้</label>
+    <input id="loginUser" type="text" autocomplete="username" placeholder="กรอกชื่อผู้ใช้">
+    <label>รหัสผ่าน</label>
+    <input id="loginPass" type="password" autocomplete="current-password" placeholder="กรอกรหัสผ่าน">
+    <button class="login-btn" onclick="login()">เข้าสู่ระบบ</button>
+    <div id="loginError" class="login-error">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>
+    <div class="small" style="text-align:center;margin-top:15px">Demo เริ่มต้น: <b>admin</b> / <b>1234</b></div>
+  </div>
+</div>
+<div id="adminArea" class="admin-area">
+
+<header><div><h1><img id="shopLogoHeader" class="shop-logo" style="display:none">🍢 <span id="shopNameHeader">บัญชีร้านลูกชิ้นปิ้ง</span></h1><p>จัดการยอดขาย • ต้นทุน • ค่าใช้จ่าย • กำไร ในที่เดียว</p></div><div class="user-info"><span>👤 Admin</span><button class="logout-btn" onclick="logout()">ออกจากระบบ</button><span id="today"></span></div></header>
+<nav>
+<button data-page="dashboard" class="active">📊 ภาพรวม</button><button data-page="history">🗂️ รายการย้อนหลัง</button><button data-page="sales">🧾 ยอดขาย</button><button data-page="expense">💸 รายจ่าย</button><button data-page="cost">🥩 ต้นทุน</button><button data-page="electric">⚡ ค่าไฟ</button><button data-page="break">🎯 จุดคุ้มทุน</button><button data-page="settings">⚙️ ข้อมูลร้าน</button>
+</nav>
+<main>
+<section id="dashboard" class="page active">
+<h2>📊 ภาพรวมร้าน</h2><p class="hint">ตัวเลขทั้งหมดคำนวณจากข้อมูลที่คุณบันทึกไว้</p>
+<div class="cards">
+<div class="card"><div class="label">ยอดขายสุทธิ</div><div class="value blue" id="dSales">0 บาท</div></div>
+<div class="card"><div class="label">เงินรับหลัง GP/ค่าธรรมเนียม</div><div class="value green" id="dNet">0 บาท</div></div>
+<div class="card"><div class="label">รายจ่ายทั้งหมด</div><div class="value orange" id="dExp">0 บาท</div></div>
+<div class="card"><div class="label">กำไรโดยประมาณ</div><div class="value" id="dProfit">0 บาท</div></div>
+</div>
+<div class="cards" style="margin-top:14px">
+<div class="card"><div class="label">จำนวนออเดอร์</div><div class="value" id="dOrders">0</div></div>
+<div class="card"><div class="label">ยอดเฉลี่ย/ออเดอร์</div><div class="value" id="dAvg">0 บาท</div></div>
+<div class="card"><div class="label">ค่า GP/ค่าธรรมเนียม</div><div class="value" id="dFee">0 บาท</div></div>
+<div class="card"><div class="label">ค่าไฟเตาโดยประมาณ</div><div class="value" id="dElec">0 บาท</div></div>
+</div>
+<div class="panel"><h2>💡 อ่านตัวเลขแบบง่าย</h2><div class="formula">กำไรโดยประมาณ = เงินรับหลัง GP/ค่าธรรมเนียม − รายจ่ายที่บันทึก</div><div id="profitMsg" class="notice">เริ่มจากบันทึกยอดขายและรายจ่าย แล้วกลับมาดูหน้านี้</div></div>
+<div class="panel"><h2>📈 สัดส่วนรายจ่าย</h2><div id="expenseBars"></div></div>
+</section>
+
+<section id="history" class="page">
+<div class="panel"><h2>🗂️ รายการย้อนหลัง</h2><p class="hint">ค้นหาและกรองข้อมูลที่บันทึกไว้ แล้วกด <b>แก้ไข</b> เพื่อเปลี่ยนข้อมูลได้ทันที</p>
+<div class="filter-row">
+<div class="field wide"><label>ค้นหา</label><input id="hSearch" placeholder="เช่น ลูกชิ้น, Grab, ค่าไฟ..."></div>
+<div class="field"><label>ประเภท</label><select id="hType"><option value="all">ทั้งหมด</option><option value="sales">ยอดขาย</option><option value="expenses">รายจ่าย</option><option value="materials">วัตถุดิบ</option></select></div>
+<div class="field"><label>เดือน</label><input id="hMonth" type="month"></div>
+<button class="btn secondary" onclick="clearHistoryFilter()">ล้างตัวกรอง</button>
+</div>
+<div id="historySummary" class="notice">รายการทั้งหมด 0 รายการ</div><div id="historyTable"></div></div>
+</section>
+
+<section id="sales" class="page">
+<div class="panel"><h2>🧾 บันทึกยอดขาย</h2><p class="hint">กรอกเฉพาะช่องที่ต้องใช้ ระบบคำนวณเงินรับสุทธิให้เอง</p>
+<div class="grid">
+<div class="field"><label>วันที่</label><input id="sDate" type="date"></div>
+<div class="field"><label>ช่องทาง</label><select id="sChannel"><option>LINE MAN</option><option>Grab</option><option>หน้าร้าน</option><option>อื่นๆ</option></select></div>
+<div class="field"><label>จำนวนออเดอร์</label><input id="sOrders" type="number" min="0" value="1"></div>
+<div class="field"><label>ยอดขายก่อนหัก (บาท)</label><input id="sGross" type="number" min="0" step=".01"></div>
+<div class="field"><label>ส่วนลด/โปร (บาท)</label><input id="sDiscount" type="number" min="0" step=".01" value="0"></div>
+<div class="field"><label>GP/ค่าธรรมเนียม (%)</label><input id="sFeePct" type="number" min="0" max="100" step=".01" value="30"></div>
+<div class="field"><label>ค่าธรรมเนียมอื่น (บาท)</label><input id="sOtherFee" type="number" min="0" step=".01" value="0"></div>
+<div class="field"><label>หมายเหตุ</label><input id="sNote"></div><div class="field" style="grid-column:span 2"><label>รูปประกอบ (ถ้ามี)</label><input id="sImage" type="file" accept="image/*"></div>
+</div><button class="btn" onclick="addSale()">+ บันทึกยอดขาย</button></div>
+<div class="panel"><h2>รายการยอดขาย</h2><div id="salesTable"></div></div>
+</section>
+
+<section id="expense" class="page">
+<div class="panel"><h2>💸 บันทึกรายจ่าย</h2><p class="hint">เช่น ลูกชิ้น น้ำจิ้ม ถุง กล่อง ค่าไฟ ค่า GP การตลาด และค่าใช้จ่ายจิปาถะ</p>
+<div class="grid">
+<div class="field"><label>วันที่</label><input id="eDate" type="date"></div>
+<div class="field"><label>หมวด</label><select id="eCat"><option>วัตถุดิบ</option><option>ค่าไฟ</option><option>GP/ค่าธรรมเนียมแอป</option><option>บรรจุภัณฑ์</option><option>ค่าแรง</option><option>ค่าน้ำ</option><option>ค่าขนส่ง</option><option>การตลาด</option><option>จิปาถะ</option><option>อื่นๆ</option></select></div>
+<div class="field"><label>รายการ</label><input id="eItem" placeholder="เช่น ลูกชิ้นหมู"></div>
+<div class="field"><label>จำนวน</label><input id="eQty" type="number" min="0" step=".01" value="1"></div>
+<div class="field"><label>ราคาต่อหน่วย</label><input id="ePrice" type="number" min="0" step=".01"></div>
+<div class="field"><label>ผู้ขาย/ร้านค้า</label><input id="eVendor"></div><div class="field" style="grid-column:span 2"><label>รูปประกอบ / ใบเสร็จ (ถ้ามี)</label><input id="eImage" type="file" accept="image/*"></div>
+</div><button class="btn" onclick="addExpense()">+ บันทึกรายจ่าย</button></div>
+<div class="panel"><h2>รายการรายจ่าย</h2><div id="expenseTable"></div></div>
+</section>
+
+<section id="cost" class="page">
+<div class="panel"><h2>🥩 ต้นทุนวัตถุดิบ</h2><p class="hint">ใส่ราคาซื้อและปริมาณ จะเห็นต้นทุนต่อหน่วยทันที</p>
+<div class="grid">
+<div class="field"><label>วัตถุดิบ</label><input id="mName" placeholder="เช่น ลูกชิ้น"></div>
+<div class="field"><label>หน่วยซื้อ</label><input id="mUnit" placeholder="กก./ถุง/กล่อง"></div>
+<div class="field"><label>ปริมาณต่อแพ็ก</label><input id="mQty" type="number" min="0" step=".01"></div>
+<div class="field"><label>ราคาซื้อ</label><input id="mPrice" type="number" min="0" step=".01"></div><div class="field" style="grid-column:span 2"><label>รูปวัตถุดิบ (ถ้ามี)</label><input id="mImage" type="file" accept="image/*"></div>
+</div><button class="btn" onclick="addMaterial()">+ เพิ่มวัตถุดิบ</button></div>
+<div class="panel"><h2>ต้นทุนที่บันทึก</h2><div id="materialTable"></div></div>
+</section>
+
+<section id="electric" class="page">
+<div class="panel"><h2>⚡ คำนวณค่าไฟเตาไฟฟ้า</h2><p class="hint">เหมาะสำหรับร้านที่ใช้เตาไฟฟ้าโดยเฉพาะ</p>
+<div class="grid">
+<div class="field"><label>กำลังไฟเตา (kW)</label><input id="kw" type="number" step=".01" value="2"></div>
+<div class="field"><label>ชั่วโมงใช้งาน/วัน</label><input id="hours" type="number" step=".01" value="6"></div>
+<div class="field"><label>จำนวนวัน/เดือน</label><input id="days" type="number" value="26"></div>
+<div class="field"><label>ค่าไฟ/หน่วย (บาท)</label><input id="rate" type="number" step=".01" value="4.5"></div>
+</div><button class="btn" onclick="calcElectric()">คำนวณค่าไฟ</button>
+<div class="cards" style="margin-top:18px"><div class="card"><div class="label">หน่วยไฟ/เดือน</div><div class="value blue" id="kwh">0 kWh</div></div><div class="card"><div class="label">ค่าไฟเตา/เดือน</div><div class="value orange" id="elecResult">0 บาท</div></div></div>
+<div class="notice">หมายเหตุ: เป็นการประมาณการจาก kW × ชั่วโมง × วัน × ค่าไฟ/หน่วย หากมีมิเตอร์แยกเตา ให้ใช้ตัวเลขจริงจะดีที่สุด</div></div>
+</section>
+
+<section id="break" class="page">
+<div class="panel"><h2>🎯 จุดคุ้มทุน</h2><p class="hint">ดูว่าต้องขายอย่างน้อยกี่ออเดอร์เพื่อไม่ให้ขาดทุน</p>
+<div class="grid">
+<div class="field"><label>ยอดขายเฉลี่ย/ออเดอร์</label><input id="bSales" type="number" step=".01"></div>
+<div class="field"><label>ต้นทุนแปรผัน/ออเดอร์</label><input id="bVar" type="number" step=".01"></div>
+<div class="field"><label>ค่าใช้จ่ายคงที่/เดือน</label><input id="bFixed" type="number" step=".01"></div>
+<div class="field"><label>กำไรเป้าหมาย/เดือน</label><input id="bTarget" type="number" step=".01" value="0"></div>
+</div><button class="btn" onclick="calcBreak()">คำนวณจุดคุ้มทุน</button>
+<div class="cards" style="margin-top:18px"><div class="card"><div class="label">กำไรต่อออเดอร์</div><div class="value green" id="bMargin">0 บาท</div></div><div class="card"><div class="label">คุ้มทุน/เดือน</div><div class="value blue" id="bMonth">0 ออเดอร์</div></div><div class="card"><div class="label">คุ้มทุน/วัน (26 วัน)</div><div class="value orange" id="bDay">0 ออเดอร์</div></div><div class="card"><div class="label">เพื่อให้ได้กำไรเป้าหมาย</div><div class="value" id="bGoal">0 ออเดอร์</div></div></div></div>
+</section>
+
+<section id="settings" class="page">
+<div class="panel"><h2>🏪 ข้อมูลร้านและรูปภาพ</h2><p class="hint">ใส่ชื่อร้านและรูปป้ายร้าน/โลโก้ ระบบจะเก็บไว้ในเบราว์เซอร์และแสดงบนหน้าหลังบ้าน</p>
+<div class="grid">
+<div class="field"><label>ชื่อร้าน</label><input id="shopName" placeholder="เช่น ลูกชิ้นปิ้งบ้านเรา"></div>
+<div class="field" style="grid-column:span 2"><label>รูปป้ายร้าน / โลโก้</label><input id="shopImage" type="file" accept="image/*" onchange="previewImageFile(this,'shopPreview')"></div>
+<div class="field"><label>ตัวอย่างรูป</label><img id="shopPreview" class="image-preview" alt="ตัวอย่างรูปป้ายร้าน"></div>
+</div>
+<button class="btn" onclick="saveShopSettings()">💾 บันทึกข้อมูลร้าน</button>
+</div>
+<div class="panel"><h2>📷 แนะนำการใช้รูป</h2><div class="notice">สามารถใส่รูปป้ายร้าน, โลโก้, รูปวัตถุดิบ, รูปใบเสร็จ หรือรูปสินค้าได้ โดยรูปจะย่อให้อัตโนมัติเพื่อช่วยประหยัดพื้นที่จัดเก็บ</div></div>
+</section>
+</main>
+</div>
+<div id="editModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-head"><div><h2 id="editTitle">แก้ไขข้อมูล</h2><span id="editTypeBadge" class="badge"></span></div><button class="close" onclick="closeEdit()">×</button></div>
+    <div id="editForm" style="margin-top:15px"></div>
+  </div>
+</div>
+<script>
+const ADMIN_USER="admin";
+const ADMIN_PASS="1234";
+function showAdmin(){ $("loginScreen").style.display="none"; $("adminArea").style.display="block"; }
+function login(){ const u=$("loginUser").value.trim(),p=$("loginPass").value;if(u===ADMIN_USER&&p===ADMIN_PASS){sessionStorage.setItem("shop_admin_login","1");$("loginError").style.display="none";showAdmin()}else{$("loginError").style.display="block"} }
+function logout(){sessionStorage.removeItem("shop_admin_login");$("adminArea").style.display="none";$("loginScreen").style.display="flex";$("loginPass").value=""}
+if(sessionStorage.getItem("shop_admin_login")==="1")showAdmin();
+const KEY="meatball_shop_v1";
+let data=JSON.parse(localStorage.getItem(KEY)||'{"sales":[],"expenses":[],"materials":[]}');
+let shopSettings=JSON.parse(localStorage.getItem("meatball_shop_settings_v1")||'{"name":"บัญชีร้านลูกชิ้นปิ้ง","image":""}');
+const $=id=>document.getElementById(id), money=n=>(Number(n)||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2});
+function save(){localStorage.setItem(KEY,JSON.stringify(data));updateDashboard();renderTables();renderHistory()}
+function compressImage(file,maxW=900,quality=.72){return new Promise((resolve,reject)=>{if(!file)return resolve("");let r=new FileReader();r.onload=()=>{let im=new Image();im.onload=()=>{let scale=Math.min(1,maxW/im.width),c=document.createElement("canvas");c.width=Math.round(im.width*scale);c.height=Math.round(im.height*scale);c.getContext("2d").drawImage(im,0,0,c.width,c.height);resolve(c.toDataURL("image/jpeg",quality))};im.onerror=reject;im.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
+function previewImageFile(input,target){let f=input.files?.[0];if(!f)return;let r=new FileReader();r.onload=()=>$(target).src=r.result;r.readAsDataURL(f)}
+function applyShopSettings(){$('shopName').value=shopSettings.name||"บัญชีร้านลูกชิ้นปิ้ง";$('shopNameHeader').textContent=shopSettings.name||"บัญชีร้านลูกชิ้นปิ้ง";if(shopSettings.image){$('shopPreview').src=shopSettings.image;$('shopLogoHeader').src=shopSettings.image;$('shopLogoHeader').style.display="inline-block"}}
+async function saveShopSettings(){let file=$('shopImage').files?.[0],img=file?await compressImage(file,1000,.75):shopSettings.image;shopSettings={name:$('shopName').value.trim()||"บัญชีร้านลูกชิ้นปิ้ง",image:img||""};localStorage.setItem("meatball_shop_settings_v1",JSON.stringify(shopSettings));applyShopSettings();alert("บันทึกข้อมูลร้านแล้ว")}
+function today(){return new Date().toISOString().slice(0,10)}
+$("today").textContent=new Date().toLocaleDateString("th-TH",{dateStyle:"long"});
+$("sDate").value=today();$("eDate").value=today();
+["loginUser","loginPass"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter")login()}));
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));$(b.dataset.page).classList.add("active");b.classList.add("active");if(b.dataset.page==="history")renderHistory()});
+async function addSale(){let gross=+$('sGross').value||0,disc=+$('sDiscount').value||0,pct=+$('sFeePct').value||0,fee=(gross-disc)*pct/100;data.sales.unshift({date:$('sDate').value,channel:$('sChannel').value,orders:+$('sOrders').value||0,gross,disc,pct,fee,other:+$('sOtherFee').value||0,note:$('sNote').value,image:await compressImage($('sImage').files?.[0])});save();$('sGross').value="";$('sNote').value="";$('sImage').value=""}
+async function addExpense(){let qty=+$('eQty').value||0,price=+$('ePrice').value||0;data.expenses.unshift({date:$('eDate').value,cat:$('eCat').value,item:$('eItem').value,qty,price,total:qty*price,vendor:$('eVendor').value,image:await compressImage($('eImage').files?.[0])});save();$('eItem').value="";$('ePrice').value="";$('eVendor').value="";$('eImage').value=""}
+async function addMaterial(){let qty=+$('mQty').value||0,price=+$('mPrice').value||0;data.materials.unshift({name:$('mName').value,unit:$('mUnit').value,qty,price,cost:qty?price/qty:0,image:await compressImage($('mImage').files?.[0])});save();['mName','mUnit','mQty','mPrice'].forEach(x=>$(x).value="");$('mImage').value=""}
+function del(type,i){if(confirm('ต้องการลบรายการนี้ใช่หรือไม่?')){data[type].splice(i,1);save()}}
+function renderTables(){
+ $('salesTable').innerHTML=data.sales.length?`<table><tr><th>รูป</th><th>วันที่</th><th>ช่องทาง</th><th>ออเดอร์</th><th>ยอดขายสุทธิ</th><th>GP/ค่าธรรมเนียม</th><th>รับสุทธิ</th><th>จัดการ</th></tr>${data.sales.map((x,i)=>{let net=x.gross-x.disc,recv=net-x.fee-x.other;return `<tr><td>${x.image?`<img class="thumb" src="${x.image}">`:`-`}</td><td>${x.date}</td><td>${x.channel}</td><td>${x.orders}</td><td>${money(net)}</td><td>${money(x.fee+x.other)}</td><td>${money(recv)}</td><td><div class="actions"><button class="btn sm" onclick="editRecord('sales',${i})">แก้ไข</button><button class="btn danger sm" onclick="del('sales',${i})">ลบ</button></div></td></tr>`}).join('')}</table>`:`<div class="empty">ยังไม่มีรายการขาย</div>`;
+ $('expenseTable').innerHTML=data.expenses.length?`<table><tr><th>รูป</th><th>วันที่</th><th>หมวด</th><th>รายการ</th><th>จำนวน</th><th>ยอดรวม</th><th>จัดการ</th></tr>${data.expenses.map((x,i)=>`<tr><td>${x.image?`<img class="thumb" src="${x.image}">`:`-`}</td><td>${x.date}</td><td>${x.cat}</td><td>${x.item}</td><td>${x.qty}</td><td>${money(x.total)}</td><td><div class="actions"><button class="btn sm" onclick="editRecord('expenses',${i})">แก้ไข</button><button class="btn danger sm" onclick="del('expenses',${i})">ลบ</button></div></td></tr>`).join('')}</table>`:`<div class="empty">ยังไม่มีรายจ่าย</div>`;
+ $('materialTable').innerHTML=data.materials.length?`<table><tr><th>รูป</th><th>วัตถุดิบ</th><th>หน่วย</th><th>ปริมาณ</th><th>ราคาซื้อ</th><th>ต้นทุน/หน่วย</th><th>จัดการ</th></tr>${data.materials.map((x,i)=>`<tr><td>${x.image?`<img class="thumb" src="${x.image}">`:`-`}</td><td>${x.name}</td><td>${x.unit}</td><td>${x.qty}</td><td>${money(x.price)}</td><td>${money(x.cost)}</td><td><div class="actions"><button class="btn sm" onclick="editRecord('materials',${i})">แก้ไข</button><button class="btn danger sm" onclick="del('materials',${i})">ลบ</button></div></td></tr>`).join('')}</table>`:`<div class="empty">ยังไม่มีวัตถุดิบ</div>`;
+}
+function updateDashboard(){let sales=data.sales.reduce((a,x)=>a+x.gross-x.disc,0),fee=data.sales.reduce((a,x)=>a+x.fee+x.other,0),net=sales-fee,exp=data.expenses.reduce((a,x)=>a+x.total,0),profit=net-exp,orders=data.sales.reduce((a,x)=>a+x.orders,0);$('dSales').textContent=money(sales)+' บาท';$('dNet').textContent=money(net)+' บาท';$('dExp').textContent=money(exp)+' บาท';$('dProfit').textContent=money(profit)+' บาท';$('dProfit').className='value '+(profit>=0?'green':'red');$('dOrders').textContent=orders.toLocaleString();$('dAvg').textContent=money(orders?sales/orders:0)+' บาท';$('dFee').textContent=money(fee)+' บาท';let cats={};data.expenses.forEach(x=>cats[x.cat]=(cats[x.cat]||0)+x.total);let max=Math.max(...Object.values(cats),1);$('expenseBars').innerHTML=Object.keys(cats).length?Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div style="margin:12px 0"><div style="display:flex;justify-content:space-between"><b>${k}</b><span>${money(v)} บาท</span></div><div class="bar"><i style="width:${v/max*100}%"></i></div></div>`).join(''):"<div class='empty'>ยังไม่มีรายจ่าย</div>"}
+function calcElectric(){let k=+$('kw').value||0,h=+$('hours').value||0,d=+$('days').value||0,r=+$('rate').value||0,kwh=k*h*d;$('kwh').textContent=money(kwh)+' kWh';$('elecResult').textContent=money(kwh*r)+' บาท'}
+function calcBreak(){let s=+$('bSales').value||0,v=+$('bVar').value||0,f=+$('bFixed').value||0,t=+$('bTarget').value||0,m=s-v;$('bMargin').textContent=money(m)+' บาท';if(m<=0){$('bMonth').textContent='ปรับราคา/ต้นทุน';$('bDay').textContent='-';$('bGoal').textContent='-';return}$('bMonth').textContent=Math.ceil(f/m).toLocaleString()+' ออเดอร์';$('bDay').textContent=Math.ceil(f/m/26).toLocaleString()+' ออเดอร์';$('bGoal').textContent=Math.ceil((f+t)/m).toLocaleString()+' ออเดอร์'}
+
+function editRecord(type,i){let x=data[type][i];$('editTitle').textContent='แก้ไขข้อมูล';$('editTypeBadge').textContent=type==='sales'?'ยอดขาย':type==='expenses'?'รายจ่าย':'วัตถุดิบ';let f='';
+ if(type==='sales') f=`<div class="grid"><div class="field"><label>วันที่</label><input id="edDate" type="date" value="${x.date||''}"></div><div class="field"><label>ช่องทาง</label><select id="edChannel"><option ${x.channel==='LINE MAN'?'selected':''}>LINE MAN</option><option ${x.channel==='Grab'?'selected':''}>Grab</option><option ${x.channel==='หน้าร้าน'?'selected':''}>หน้าร้าน</option><option ${x.channel==='อื่นๆ'?'selected':''}>อื่นๆ</option></select></div><div class="field"><label>จำนวนออเดอร์</label><input id="edOrders" type="number" min="0" value="${x.orders||0}"></div><div class="field"><label>ยอดขายก่อนหัก</label><input id="edGross" type="number" step=".01" value="${x.gross||0}"></div><div class="field"><label>ส่วนลด/โปร</label><input id="edDisc" type="number" step=".01" value="${x.disc||0}"></div><div class="field"><label>GP/ค่าธรรมเนียม (%)</label><input id="edPct" type="number" step=".01" value="${x.pct||0}"></div><div class="field"><label>ค่าธรรมเนียมอื่น</label><input id="edOther" type="number" step=".01" value="${x.other||0}"></div><div class="field"><label>หมายเหตุ</label><input id="edNote" value="${(x.note||'').replace(/"/g,'&quot;')}"></div><div class="field" style="grid-column:span 2"><label>เปลี่ยนรูป</label><input id="edImage" type="file" accept="image/*"></div></div><button class="btn" onclick="updateRecord('sales',${i})">บันทึกการแก้ไข</button>`;
+ else if(type==='expenses') f=`<div class="grid"><div class="field"><label>วันที่</label><input id="edDate" type="date" value="${x.date||''}"></div><div class="field"><label>หมวด</label><select id="edCat">${['วัตถุดิบ','ค่าไฟ','GP/ค่าธรรมเนียมแอป','บรรจุภัณฑ์','ค่าแรง','ค่าน้ำ','ค่าขนส่ง','การตลาด','จิปาถะ','อื่นๆ'].map(v=>`<option ${x.cat===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label>รายการ</label><input id="edItem" value="${(x.item||'').replace(/"/g,'&quot;')}"></div><div class="field"><label>จำนวน</label><input id="edQty" type="number" step=".01" value="${x.qty||0}"></div><div class="field"><label>ราคาต่อหน่วย</label><input id="edPrice" type="number" step=".01" value="${x.price||0}"></div><div class="field"><label>ผู้ขาย/ร้านค้า</label><input id="edVendor" value="${(x.vendor||'').replace(/"/g,'&quot;')}"></div><div class="field" style="grid-column:span 2"><label>เปลี่ยนรูป</label><input id="edImage" type="file" accept="image/*"></div></div><button class="btn" onclick="updateRecord('expenses',${i})">บันทึกการแก้ไข</button>`;
+ else f=`<div class="grid"><div class="field"><label>วัตถุดิบ</label><input id="edName" value="${(x.name||'').replace(/"/g,'&quot;')}"></div><div class="field"><label>หน่วยซื้อ</label><input id="edUnit" value="${(x.unit||'').replace(/"/g,'&quot;')}"></div><div class="field"><label>ปริมาณต่อแพ็ก</label><input id="edQty" type="number" step=".01" value="${x.qty||0}"></div><div class="field"><label>ราคาซื้อ</label><input id="edPrice" type="number" step=".01" value="${x.price||0}"></div><div class="field" style="grid-column:span 2"><label>เปลี่ยนรูปวัตถุดิบ</label><input id="edImage" type="file" accept="image/*"></div></div><button class="btn" onclick="updateRecord('materials',${i})">บันทึกการแก้ไข</button>`;
+ $('editForm').innerHTML=f;$('editModal').classList.add('show')}
+async function updateRecord(type,i){let x=data[type][i];if(type==='sales'){x.date=$('edDate').value;x.channel=$('edChannel').value;x.orders=+$('edOrders').value||0;x.gross=+$('edGross').value||0;x.disc=+$('edDisc').value||0;x.pct=+$('edPct').value||0;x.fee=(x.gross-x.disc)*x.pct/100;x.other=+$('edOther').value||0;x.note=$('edNote').value;let f=$('edImage')?.files?.[0];if(f)x.image=await compressImage(f)}
+ else if(type==='expenses'){x.date=$('edDate').value;x.cat=$('edCat').value;x.item=$('edItem').value;x.qty=+$('edQty').value||0;x.price=+$('edPrice').value||0;x.total=x.qty*x.price;x.vendor=$('edVendor').value;let f=$('edImage')?.files?.[0];if(f)x.image=await compressImage(f)}
+ else {x.name=$('edName').value;x.unit=$('edUnit').value;x.qty=+$('edQty').value||0;x.price=+$('edPrice').value||0;x.cost=x.qty?x.price/x.qty:0;let f=$('edImage')?.files?.[0];if(f)x.image=await compressImage(f)}
+save();closeEdit()}
+function closeEdit(){$('editModal').classList.remove('show')}
+window.addEventListener('click',e=>{if(e.target===$('editModal'))closeEdit()});
+function historyRows(){let rows=[];data.sales.forEach((x,i)=>rows.push({type:'sales',i,image:x.image||'',date:x.date||'',title:x.channel,detail:`${x.orders||0} ออเดอร์ • ยอดสุทธิ ${money((x.gross||0)-(x.disc||0))} บาท`,amount:(x.gross||0)-(x.disc||0)}));data.expenses.forEach((x,i)=>rows.push({type:'expenses',i,image:x.image||'',date:x.date||'',title:x.cat,detail:`${x.item||'-'} • ${x.qty||0} × ${money(x.price||0)} บาท`,amount:x.total||0}));data.materials.forEach((x,i)=>rows.push({type:'materials',i,image:x.image||'',date:'',title:x.name,detail:`${x.qty||0} ${x.unit||''} • ราคาซื้อ ${money(x.price||0)} บาท`,amount:x.price||0}));return rows.sort((a,b)=>b.date.localeCompare(a.date))}
+function renderHistory(){let q=($('hSearch')?.value||'').trim().toLowerCase(),type=$('hType')?.value||'all',month=$('hMonth')?.value||'';let rows=historyRows().filter(r=>(type==='all'||r.type===type)&&(!month||r.date.startsWith(month))&&(!q||(r.title+' '+r.detail+' '+r.date).toLowerCase().includes(q)));$('historySummary').textContent=`พบ ${rows.length.toLocaleString()} รายการ${q||month||type!=='all'?' จากข้อมูลที่กรอง':''}`;$('historyTable').innerHTML=rows.length?`<table><tr><th>รูป</th><th>วันที่</th><th>ประเภท</th><th>รายการ</th><th>รายละเอียด</th><th>จำนวนเงิน</th><th>จัดการ</th></tr>${rows.map(r=>`<tr><td>${r.image?`<img class="thumb" src="${r.image}">`:`-`}</td><td>${r.date||'-'}</td><td><span class="badge">${r.type==='sales'?'ยอดขาย':r.type==='expenses'?'รายจ่าย':'วัตถุดิบ'}</span></td><td>${r.title||'-'}</td><td>${r.detail}</td><td>${money(r.amount)} บาท</td><td><div class="actions"><button class="btn sm" onclick="editRecord('${r.type}',${r.i})">แก้ไข</button><button class="btn danger sm" onclick="del('${r.type}',${r.i})">ลบ</button></div></td></tr>`).join('')}</table>`:`<div class="empty">ไม่พบรายการตามเงื่อนไข</div>`}
+function clearHistoryFilter(){$('hSearch').value='';$('hType').value='all';$('hMonth').value='';renderHistory()}
+['hSearch','hType','hMonth'].forEach(id=>$(id).addEventListener('input',renderHistory));
+renderTables();updateDashboard();calcElectric();renderHistory();applyShopSettings();
+</script>
+</body>
+</html>
